@@ -1,0 +1,20 @@
+= bluewhale
+:icons: font
+ifdef::env-name[:relfilesuffix: .adoc]
+
+Narvi web app
+
+image::https://badgers.space/badge/foo/Warning/red?icon=feather-alert-triangle&scale=1.4&label=&label_color=orange[]
+[IMPORTANT]
+.This repository contains a submodule
+====
+The repository contains a git submodule in `work/database/csv2sql` (from https://github.com/narvisoftware/csv2sql.git[narvisoftware/csv2sql]),
+so in order to fetch the sub-repository you must also enter the following commands after clone :
+[source,bash]
+----
+git submodule init
+git submodule update
+----
+====
+
+Also, see the xref:work/database/README.adoc[README.adoc] from `work/database`.

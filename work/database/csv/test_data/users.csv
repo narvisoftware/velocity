@@ -1,0 +1,3 @@
+id:text,username:text,password_hash:text,password_salt:text,first_name:text,last_name:text,identity_card_number:text
+b6f47ee0950c4ff59c3ffa94dcfc557d,mihai@narvi.ro,cgOGPH5naH7EfibmnBGYa73y17KT+aoc,YJJ2SPfwAE4nlMk8yEp3ZQ==,Mihai,Vasilache,12091411514
+07b23b60a9cd4ea499a18b4a1d1e2072,john,yzzTwIafh64FrhNbsdpRyETctPmUSnJQ,tncXfGASPJEeDGApKjNuww==,John,Doe,00000000000

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+  <appender name="CONSOLE-LOCAL" class="com.adobe.exc.dps.util.logging.logback.DPSConsoleAppender">
+    <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+      <layout class="ch.qos.logback.classic.PatternLayout">
+        <pattern>
+          [%d{YYYY-MM-dd HH:mm:ss.SSS}] [%highlight(%-5level)] [%logger{0} - %logger] [%red(%replace(%replace(%rootException{0}){'\t\t*', ''}){'\n', ''}){}] %n ╚> %msg %kvp{NONE}
+        </pattern>
+      </layout>
+    </encoder>
+  </appender>
+
+  <!-- on local env do not use json for logging -->
+  <root level="INFO" additivity="false">
+    <appender-ref ref="CONSOLE-LOCAL"/>
+  </root>
+
+</configuration>

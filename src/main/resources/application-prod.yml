@@ -1,0 +1,32 @@
+logging:
+  level:
+    com:
+      adobe: INFO
+
+com:
+  adobe:
+    asr:
+      #To enable payload logging on prod change this to true
+      # If your payload contains PII, you must also set up your log masking filter
+      # See https://wiki.corp.adobe.com/display/ASR/ASR+Dev+Logging#ASRDevLogging-ExtendingLogMasking
+      logServerRequestResponseBody: true
+    exc:
+      dps:
+        readTimeOutMillis: 10000
+        connectTimeOutMillis: 10000
+        xcore:
+          url: https://platform.adobe.io/data/core/xcore
+        sms:
+          url: https://platform.adobe.io/data/foundation/sandbox-management
+        ims:
+          url: https://ims-na1.adobelogin.com
+        blackbird:
+          url: https://edge.adobe.io
+        schemaRegistry:
+          url: https://platform.adobe.io/data/foundation/schemaregistry
+        redis:
+          port: 6380
+        tagService:
+          url: https://experience.adobe.io/unifiedtags
+    pca:
+      environment: "prod"

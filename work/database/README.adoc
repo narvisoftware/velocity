@@ -1,0 +1,23 @@
+= bluewhale
+:icons: font
+
+== Developing the Database
+
+1. Working with ER (Entity–Relationship) Diagrams for DDL.
+* TODO. Not done yet
+2. Maintaining Data and Test data
+* Data is stored in CSV files in order to be easily visualised and modified in tools like Google Sheet, Libre Office, MS Office.
+** the CSV files are in these directories
+*** `csv/catalogs`
+*** `csv/init_data`
+*** `csv/test_data`
+* From csv, the `csv2sql.py` script will generate `INSERT INTO` statements `.sql` files.
+*** this script is located `csv2sql` subfolder.
+It has its own git repository: https://github.com/narvisoftware/csv2sql.git[narvisoftware/csv2sql], which is a fork of https://github.com/ThomasDebrunner/csv2sql[ThomasDebrunner/csv2sql],
+even though it is registered as a git submodule in the parent repository.
+The columns from the `.csv` files can be enclosed in double quotes or not (only comma separated).
+*** there is also a `.bat` batch script `generate-sql-scripts.bat` with the calls to `csv2sql.py` for all the `csv` files.
+The output is in `.sql` files in `sql-output` folder (with subfolder for each type of script). These `.sql` fies
+must be copied to `src/main/resources/db/migration` in order for `Flyweight` to execute them against the postgresql server.
+
+

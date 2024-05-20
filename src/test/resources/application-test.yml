@@ -1,0 +1,73 @@
+logging:
+  config: classpath:logback-test.xml
+  level:
+    root: INFO
+    # DPS
+    com.adobe.exc.dps: INFO
+    #    com.adobe.exc.dps.util.model.dto.ClassPathScanner: INFO
+    #    com.adobe.exc.dps.util.model.dto.TransferObjectsReflectionUtils: DEBUG # print Entity to DTO and ViewModel mappings
+    # Spring
+    #    org.springframework: INFO
+    #    org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener: INFO
+    # Wiremock
+#    com.github.tomakehurst.wiremock: TRACE
+
+wiremock:
+  server:
+    port: 0
+com:
+  adobe:
+    exc:
+      dps:
+        readTimeOutMillis: 10000
+        connectTimeOutMillis: 10000
+        xcore:
+          url: http://localhost:${wiremock.server.port}/xcore
+        tagService:
+          url: http://localhost:${wiremock.server.port}/unifiedtags
+        sms:
+          url: http://localhost:${wiremock.server.port}/sms
+        schemaRegistry:
+          healthPath: "/health"
+          url: http://localhost:${wiremock.server.port}
+        blackbird:
+          url: http://localhost:${wiremock.server.port}
+          healthPath: "/configs/health"
+        redis:
+          enabled: false
+          host: "127.0.0.1"
+          port: 30001
+          accessKey: ""
+          ttlValue: PT24H
+          verifyPeer: false
+        ims:
+          enableTokenCache: true
+          url: http://localhost:${wiremock.server.port}
+          apiKey: acp_core_omnihub_entities
+          service:
+            grantType: authorization_code
+            clientId: ${IMS_CLIENT_ID}
+            clientSecret: ${IMS_CLIENT_SECRET}
+            code: ${IMS_CLIENT_CODE}
+        asrResiliencyFeature:
+          asrTimeLimiterConfig: 3600000 # one hour
+          asrRetriesConfig:
+            numOfTries: 1
+            waitDurationBetweenRetries: 1
+            backOffMultiplier: 1.0
+      asr:
+        logServerRequestResponse: true
+        webclient:
+          maxConnections: 998
+        filters:
+          logging-enabled: true
+        logging:
+          mask:
+            headers: User-Agent
+          level: debug
+          pretty: true
+          format: json
+          logger-name: com.adobe.asr.postman
+        telemetry:
+          ingest:
+            enable: false

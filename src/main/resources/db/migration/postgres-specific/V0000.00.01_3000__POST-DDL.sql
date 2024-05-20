@@ -1,0 +1,3 @@
+CREATE INDEX idx_countries_pubctlg_norlz_name_trgm ON countries_pub_ctlg USING gin(normalized_name gin_trgm_ops);
+CREATE INDEX idx_administrative_divisions_pubctlg_norlz_name_trgm ON administrative_divisions_pub_ctlg USING gin(normalized_name gin_trgm_ops);
+CREATE INDEX idx_cities_pubctlg_norlz_name_trgm ON cities_pub_ctlg USING gin(normalized_name gin_trgm_ops);

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration debug="true">
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+  <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+  <springProperty scope="context" name="springAppVersion" source="spring.application.version"/>
+  <contextName>${springAppName}</contextName>
+
+  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+      <providers>
+        <timestamp>
+          <fieldName>Timestamp/UTC</fieldName>
+          <timeZone>UTC</timeZone>
+        </timestamp>
+        <logLevel>
+          <fieldName>Level</fieldName>
+        </logLevel>
+        <threadName>
+          <fieldName>Thread</fieldName>
+        </threadName>
+        <contextName>
+          <fieldName>ServiceName</fieldName>
+        </contextName>
+        <pattern>
+          <!-- the pattern that defines what to include -->
+          <pattern>
+            {
+            "ServiceVersion": "${springAppVersion}",
+            "ServiceHostName": "${hostname}",
+            "PID": "${PID:-}"
+            }
+          </pattern>
+        </pattern>
+        <mdc/>
+        <arguments>
+          <includeNonStructuredArguments>true</includeNonStructuredArguments>
+        </arguments>
+        <loggerName>
+          <fieldName>Logger</fieldName>
+        </loggerName>
+        <callerData>
+          <classFieldName>Class</classFieldName>
+          <methodFieldName>Method</methodFieldName>
+          <fileFieldName>File</fileFieldName>
+          <lineFieldName>Line</lineFieldName>
+        </callerData>
+        <message>
+          <fieldName>Message</fieldName>
+        </message>
+        <throwableClassName>
+          <fieldName>ExceptionClass</fieldName>
+        </throwableClassName>
+        <stackTrace>
+          <fieldName>StackTrace</fieldName>
+          <!-- maxLength - limit the length of the stack trace -->
+          <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+            <maxDepthPerThrowable>2000</maxDepthPerThrowable>
+            <maxLength>50000</maxLength>
+            <rootCauseFirst>true</rootCauseFirst>
+          </throwableConverter>
+        </stackTrace>
+      </providers>
+    </encoder>
+  </appender>
+
+  <appender name="ASYNC_JSON_CONSOLE_APPENDER" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="JSON_CONSOLE_APPENDER"/>
+    <neverBlock>true</neverBlock>
+    <queueSize>1000</queueSize>
+    <!--0 -> keep all events, no dot dropping any message-->
+    <discardingThreshold>0</discardingThreshold>
+    <!--
+    Depending on the queue depth and latency to the referenced appender, the AsyncAppender may take an
+    unacceptable amount of time to fully flush the queue. When the LoggerContext is stopped, the AsyncAppender
+    stop method waits up to this timeout for the worker thread to complete. Use maxFlushTime to specify a maximum
+     queue flush timeout in milliseconds. Events that cannot be processed within this window are discarded.
+     Semantics of this value are identical to that of Thread.join(long).
+    -->
+    <maxFlushTime>10000</maxFlushTime><!--milliseconds-->
+    <!--
+    Extracting caller data can be rather expensive. To improve performance, by default, caller data associated
+    with an event is not extracted when the event added to the event queue. By default, only "cheap" data like the
+    thread name and the MDC are copied. You can direct this appender to include caller data by setting the
+    includeCallerData property to true.
+    -->
+    <includeCallerData>true</includeCallerData>
+  </appender>
+
+  <root level="INFO" additivity="false">
+    <appender-ref ref="ASYNC_JSON_CONSOLE_APPENDER"/>
+  </root>
+
+</configuration>

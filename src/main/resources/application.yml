@@ -1,0 +1,51 @@
+server:
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+  port: 8080
+
+logging:
+  config: classpath:logback-bluewhale-json-appender.xml
+  register-shutdown-hook: true
+  level:
+    root: INFO
+
+spring:
+  jpa:
+    open-in-view: false
+    database: POSTGRESQL
+    properties:
+      hibernate:
+        ddl-auto: none
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        #allows different instances to be merged on cascade=merge. Ex merge Partner, the two different instances(same id) are allowed: partner.address.region, partner.address.city.region
+        event.merge.entity_copy_observer: allow
+      
+  aop:
+    proxy-target-class: true
+  application:
+    name: bluewhale webapp
+  threads:
+    virtual:
+      enabled: true;
+  profiles:
+    active: local
+
+flyway:
+  enabled: false
+
+all-db:
+  flyway:
+    locations: classpath:db/migration/test-data,classpath:db/migration/common,classpath:db/migration/postgres-specific
+  datasource:
+    driverClassName: org.postgresql.Driver
+    testOnBorrow: true
+    testWhileIdle: true
+    validationInterval: 30000
+    validationQuery: SELECT 1
+    timeBetweenEvictionRunsMillis: 30000
+    minEvictableIdleTimeMillis: 60000
+    removeAbandoned: false
+    #30 min. A connection is dropped at returning to pool if older than that.
+    maxAge: 1800000
+    logValidationErrors: true
